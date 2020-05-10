@@ -27,6 +27,11 @@ class _findMePlease extends State<FindMePlease> {
   
   final Geolocator geolocator = Geolocator();
 
+  @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
 
   
   Future<void> _getCurrentLocation() async {
