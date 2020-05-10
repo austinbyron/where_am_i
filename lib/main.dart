@@ -25,7 +25,7 @@ class _findMePlease extends State<FindMePlease> {
   Position _currentPosition;
   String _currentAddress;
   
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  final Geolocator geolocator = Geolocator();
 
 
   
