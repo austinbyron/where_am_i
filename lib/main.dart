@@ -28,12 +28,12 @@ class _findMePlease extends State<FindMePlease> {
   final Geolocator geolocator = Geolocator();
 
   @override
-  void initState() async {
+  void initState() {
 
     //_timeString = "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}";
     //Timer.periodic(Duration(seconds: 1), (Timer t) => _getCurrentTime());
     //super.initState();
-    await _getCurrentLocation();
+    _getCurrentLocation();
     super.initState();
   }
 
