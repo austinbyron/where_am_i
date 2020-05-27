@@ -7,7 +7,42 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:latlong/latlong.dart';
 
+  Position _currentPosition;
+  String _currentAddress;
+  
+  final Geolocator geolocator = Geolocator();
 
+    Future<void> _getCurrentLocation() async {
+    
+
+    await geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    ).then((Position position) async {
+      
+        _currentPosition = position;
+        
+      
+      await _getAddressFromLatLng();
+    }).catchError((e) {
+      CircularProgressIndicator();
+      print(e);
+    }); 
+
+  }
+
+  Future<void> _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+      Placemark place = p[0];
+
+      
+        _currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
+      
+    } catch (e) {
+      CircularProgressIndicator();
+      print(e);
+    }
+  }
 /// makes big button that goes to mapbox maps
 /// 
 class FindMePlease extends StatefulWidget {
@@ -22,10 +57,7 @@ class FindMePlease extends StatefulWidget {
 }
 class _findMePlease extends State<FindMePlease> {
 
-  Position _currentPosition;
-  String _currentAddress;
-  
-  final Geolocator geolocator = Geolocator();
+
 
   @override
   void initState() {
@@ -43,42 +75,12 @@ class _findMePlease extends State<FindMePlease> {
   }
 
 
-  Future<void> _getCurrentLocation() async {
-    
 
-    geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    ).then((Position position) {
-      setState(() {
-        _currentPosition = position;
-        
-      });
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      CircularProgressIndicator();
-      print(e);
-    }); 
-
-  }
-
-  Future<void> _getAddressFromLatLng() async {
-    try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
-      Placemark place = p[0];
-
-      setState(() {
-        _currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
-      });
-    } catch (e) {
-      CircularProgressIndicator();
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     
-    _getCurrentLocation();
+    //_getCurrentLocation();
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       return Center(
         child: Container(
@@ -116,6 +118,9 @@ class _findMePlease extends State<FindMePlease> {
                   }
                   else {
                     await _getCurrentLocation().then((value) {
+                      //while (_currentAddress == null || _currentAddress == null) {
+                        //do nothing
+                      //}
                       Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
@@ -160,7 +165,7 @@ class _findMePlease extends State<FindMePlease> {
                     ),
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   if (_currentPosition != null && _currentAddress != null) {
                     Navigator.push(
                       context,
@@ -168,9 +173,17 @@ class _findMePlease extends State<FindMePlease> {
                     );
                   }
                   else {
-                    _getCurrentLocation();
+                    await _getCurrentLocation().then((value) {
+                      //while (_currentAddress == null || _currentAddress == null) {
+                        //do nothing
+                      //}
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                    );
+                    });
                     
-                  }                
+                  }              
                 },
               
               ),
@@ -834,8 +847,11 @@ class NationalPark extends StatelessWidget {
 
 }
 
-void main() {
-  runApp(MyMapsApp());
+void main() async {
+  await _getCurrentLocation().then((value) {
+    runApp(MyMapsApp());
+  });
+  
 }
 
 
