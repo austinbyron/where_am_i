@@ -55,9 +55,11 @@ class FindMePlease extends StatefulWidget {
   @override
   _findMePlease createState() => _findMePlease();
 }
+
+var pushed = false;
 class _findMePlease extends State<FindMePlease> {
 
-
+  
 
   @override
   void initState() {
@@ -83,7 +85,7 @@ class _findMePlease extends State<FindMePlease> {
     //_getCurrentLocation();
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       return Center(
-        child: Container(
+        child: pushed ? CircularProgressIndicator() : Container(
           height: 300.0,
           width: 300.0,
         
@@ -110,13 +112,19 @@ class _findMePlease extends State<FindMePlease> {
                   ),
                 ),
                 onTap: () async {
+                  setState(() {
+                      pushed = true;
+                    });
                   if (_currentPosition != null && _currentAddress != null) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
-                    );
+                    ).then((value) {
+                      pushed = false;
+                    });
                   }
                   else {
+                    
                     await _getCurrentLocation().then((value) {
                       //while (_currentAddress == null || _currentAddress == null) {
                         //do nothing
@@ -124,7 +132,11 @@ class _findMePlease extends State<FindMePlease> {
                       Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        pushed = false;
+                      });
+                    });
                     });
                     
                   }
@@ -139,7 +151,7 @@ class _findMePlease extends State<FindMePlease> {
     }
     else {
       return Center(
-        child: Container(
+        child: pushed ? CircularProgressIndicator() : Container(
           height: 180.0,
           width: 400.0,
           
@@ -166,11 +178,18 @@ class _findMePlease extends State<FindMePlease> {
                   ),
                 ),
                 onTap: () async {
+                  setState(() {
+                    pushed = true;
+                  });
                   if (_currentPosition != null && _currentAddress != null) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        pushed = false;
+                      });
+                    });
                   }
                   else {
                     await _getCurrentLocation().then((value) {
@@ -181,6 +200,10 @@ class _findMePlease extends State<FindMePlease> {
                       context,
                       MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
                     );
+                    }).then((value) {
+                      setState(() {
+                        pushed = false;
+                      });
                     });
                     
                   }              
@@ -241,6 +264,7 @@ class MapTo extends StatelessWidget {
             return IconButton(
               icon: const Icon(Icons.close),
               onPressed: () { 
+                pushed = false;
                 Navigator.pop(context);
               },
             );
