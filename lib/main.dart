@@ -107,7 +107,7 @@ class _findMePlease extends State<FindMePlease> {
                     ),
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   if (_currentPosition != null && _currentAddress != null) {
                     Navigator.push(
                       context,
@@ -115,7 +115,12 @@ class _findMePlease extends State<FindMePlease> {
                     );
                   }
                   else {
-                    _getCurrentLocation();
+                    await _getCurrentLocation().then((value) {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                    );
+                    });
                     
                   }
                 
