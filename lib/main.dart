@@ -491,6 +491,7 @@ class WhereAmI extends StatelessWidget {
                             ),
                           ),
                         onTap: () {
+                          //wtf did i do here?
                           if (devOrientationStart == MediaQuery.of(context).orientation) {
                             if (Navigator.canPop(context)) {
                               Navigator.pop(context);
