@@ -545,9 +545,9 @@ class WhereAmI extends StatelessWidget {
           width: 450,
           height: 60,
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: const Text(
-              "Found you!    ",
+              "Found you!",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14.0,
@@ -765,9 +765,9 @@ class WhereAmI extends StatelessWidget {
           width: 450,
           height: 60,
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: const Text(
-              "Found you!    ",
+              "Found you!",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14.0,
@@ -932,9 +932,9 @@ class MyMapsApp extends StatelessWidget {
             width: 450,
             height: 60,
             child: Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: const Text(
-                "Where are you?    ",
+                "Where are you?",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14.0,
