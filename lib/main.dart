@@ -262,6 +262,7 @@ class MapTo extends StatelessWidget {
     //print("$_lat, $_long");
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "There you are!",
           style: TextStyle(
@@ -531,6 +532,7 @@ class WhereAmI extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           "You're right here!",
           style: TextStyle(
@@ -751,6 +753,7 @@ class WhereAmI extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           "You're right here!",
           style: TextStyle(
@@ -917,6 +920,7 @@ class MyMapsApp extends StatelessWidget {
         backgroundColor: Colors.white,
         body: FindMePlease(),
         appBar: AppBar(
+          centerTitle: true,
           title: const Text(
             "Find out where you are",
             style: TextStyle(
