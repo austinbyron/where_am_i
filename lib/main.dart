@@ -140,6 +140,9 @@ class _findMePlease extends State<FindMePlease> {
                     });
                     
                   }
+                  setState(() {
+                    pushed = false;
+                  });
                 
                 },
               
@@ -206,7 +209,10 @@ class _findMePlease extends State<FindMePlease> {
                       });
                     });
                     
-                  }              
+                  }
+                  setState(() {
+                    pushed = false;
+                  });              
                 },
               
               ),
@@ -873,6 +879,7 @@ class NationalPark extends StatelessWidget {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await _getCurrentLocation().then((value) {
     runApp(MyMapsApp());
   });
