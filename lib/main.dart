@@ -7,22 +7,22 @@ import 'dart:io';
 
 import 'package:latlong/latlong.dart';
 
-  Position _currentPosition;
-  String _currentAddress;
+  Position currentPosition;
+  String currentAddress;
   
   final Geolocator geolocator = Geolocator();
 
-    Future<void> _getCurrentLocation() async {
+  Future<void> getMyCurrentLocation() async {
     
 
     await geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
     ).then((Position position) async {
       
-        _currentPosition = position;
+        currentPosition = position;
         
       
-      await _getAddressFromLatLng();
+      await getMyAddressFromLatLng();
     }).catchError((e) {
       CircularProgressIndicator();
       print(e);
@@ -30,16 +30,16 @@ import 'package:latlong/latlong.dart';
 
   }
 
-  Future<void> _getAddressFromLatLng() async {
+  Future<void> getMyAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
       Placemark place = p[0];
 
       if (Platform.isIOS) {
-        _currentAddress = "${place.name},\n${place.locality}, ${place.postalCode},\n${place.country}";
+        currentAddress = "${place.name},\n${place.locality}, ${place.postalCode},\n${place.country}";
       } 
       else {
-        _currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
+        currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
       }     
 
       
@@ -58,11 +58,11 @@ class FindMePlease extends StatefulWidget {
   const FindMePlease();
 
   @override
-  _findMePlease createState() => _findMePlease();
+  _FindMePlease createState() => _FindMePlease();
 }
 
 var pushed = false;
-class _findMePlease extends State<FindMePlease> {
+class _FindMePlease extends State<FindMePlease> {
 
   
 
@@ -72,7 +72,7 @@ class _findMePlease extends State<FindMePlease> {
     //_timeString = "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}";
     //Timer.periodic(Duration(seconds: 1), (Timer t) => _getCurrentTime());
     //super.initState();
-    _getCurrentLocation();
+    getMyCurrentLocation();
     super.initState();
   }
 
@@ -120,23 +120,23 @@ class _findMePlease extends State<FindMePlease> {
                   setState(() {
                       pushed = true;
                     });
-                  if (_currentPosition != null && _currentAddress != null) {
+                  if (currentPosition != null && currentAddress != null) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: currentPosition.latitude, longitude: currentPosition.longitude, addr: currentAddress)),
                     ).then((value) {
                       pushed = false;
                     });
                   }
                   else {
                     
-                    await _getCurrentLocation().then((value) {
+                    await getMyCurrentLocation().then((value) {
                       //while (_currentAddress == null || _currentAddress == null) {
                         //do nothing
                       //}
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: currentPosition.latitude, longitude: currentPosition.longitude, addr: currentAddress)),
                     ).then((value) {
                       setState(() {
                         pushed = false;
@@ -189,10 +189,10 @@ class _findMePlease extends State<FindMePlease> {
                   setState(() {
                     pushed = true;
                   });
-                  if (_currentPosition != null && _currentAddress != null) {
+                  if (currentPosition != null && currentAddress != null) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: currentPosition.latitude, longitude: currentPosition.longitude, addr: currentAddress)),
                     ).then((value) {
                       setState(() {
                         pushed = false;
@@ -200,13 +200,13 @@ class _findMePlease extends State<FindMePlease> {
                     });
                   }
                   else {
-                    await _getCurrentLocation().then((value) {
+                    await getMyCurrentLocation().then((value) {
                       //while (_currentAddress == null || _currentAddress == null) {
                         //do nothing
                       //}
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MapTo(latitude: _currentPosition.latitude, longitude: _currentPosition.longitude, addr: _currentAddress)),
+                      MaterialPageRoute(builder: (context) => MapTo(latitude: currentPosition.latitude, longitude: currentPosition.longitude, addr: currentAddress)),
                     );
                     }).then((value) {
                       setState(() {
@@ -885,7 +885,7 @@ class NationalPark extends StatelessWidget {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _getCurrentLocation().then((value) {
+  await getMyCurrentLocation().then((value) {
     runApp(MyMapsApp());
   });
   
@@ -894,8 +894,6 @@ void main() async {
 
 class MyMapsApp extends StatelessWidget {
 
-
-    
 
   @override
   Widget build(BuildContext context) {
@@ -954,17 +952,18 @@ class MyMapsApp extends StatelessWidget {
     );
   }
 }
+/*
 
 class LocationStuff extends StatefulWidget {
  
   const LocationStuff();
 
   @override
-  _locationStuff createState() => _locationStuff();
+  _LocationStuff createState() => _LocationStuff();
   
 }
 
-class _locationStuff extends State<LocationStuff> {
+class _LocationStuff extends State<LocationStuff> {
 
   Position _currentPosition;
 
@@ -1021,3 +1020,4 @@ class _locationStuff extends State<LocationStuff> {
   }
   
 }
+*/
