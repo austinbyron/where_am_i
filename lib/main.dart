@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'dart:io';
 
 import 'package:latlong/latlong.dart';
 
@@ -35,8 +35,13 @@ import 'package:latlong/latlong.dart';
       List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
       Placemark place = p[0];
 
-      
+      if (Platform.isIOS) {
+        _currentAddress = "${place.name},\n${place.locality}, ${place.postalCode},\n${place.country}";
+      } 
+      else {
         _currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
+      }     
+
       
     } catch (e) {
       CircularProgressIndicator();
