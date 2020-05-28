@@ -7,53 +7,47 @@ import 'dart:io';
 
 import 'package:latlong/latlong.dart';
 
-  Position currentPosition;
-  String currentAddress;
+Position currentPosition;
+String currentAddress;
   
-  final Geolocator geolocator = Geolocator();
+final Geolocator geolocator = Geolocator();
 
-  Future<void> getMyCurrentLocation() async {
+Future<void> getMyCurrentLocation() async {
     
-
-    await geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    ).then((Position position) async {
+  await geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.best,
+  ).then((Position position) async {
       
-        currentPosition = position;
+    currentPosition = position;
         
       
-      await getMyAddressFromLatLng();
-    }).catchError((e) {
-      CircularProgressIndicator();
-      print(e);
-    }); 
+    await getMyAddressFromLatLng();
+  }).catchError((e) {
+    CircularProgressIndicator();
+    print(e);
+  }); 
 
+}
+
+Future<void> getMyAddressFromLatLng() async {
+  try {
+    List<Placemark> p = await geolocator.placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+    Placemark place = p[0];
+
+    if (Platform.isIOS) {
+      currentAddress = "${place.name},\n${place.locality}, ${place.postalCode},\n${place.country}";
+    } 
+    else {
+      currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
+    }       
+  } catch (e) {
+    CircularProgressIndicator();
+    print(e);
   }
-
-  Future<void> getMyAddressFromLatLng() async {
-    try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
-      Placemark place = p[0];
-
-      if (Platform.isIOS) {
-        currentAddress = "${place.name},\n${place.locality}, ${place.postalCode},\n${place.country}";
-      } 
-      else {
-        currentAddress = "${place.name} ${place.thoroughfare},\n${place.locality}, ${place.postalCode},\n${place.country}";
-      }     
-
-      
-    } catch (e) {
-      CircularProgressIndicator();
-      print(e);
-    }
-  }
+}
 /// makes big button that goes to mapbox maps
 /// 
 class FindMePlease extends StatefulWidget {
-
-  
-  
   
   const FindMePlease();
 
@@ -788,6 +782,8 @@ class WhereAmI extends StatelessWidget {
   }
 }
 
+/*
+
 class NationalPark extends StatelessWidget {
   final latitude_old;
   final longitude_old;
@@ -885,6 +881,7 @@ class NationalPark extends StatelessWidget {
   }
 
 }
+*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
