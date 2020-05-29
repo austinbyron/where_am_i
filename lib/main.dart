@@ -452,12 +452,7 @@ class WhereAmI extends StatelessWidget {
                             ),
                           ),
                         onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
+                          Navigator.popUntil(context, (route) => route.isFirst);
                         },
                         ),
                       ),
@@ -504,12 +499,7 @@ class WhereAmI extends StatelessWidget {
                             }
                           }
                           else {
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
+                            Navigator.popUntil(context, (route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => MapTo(latitude: latitude, longitude: longitude, addr: addr)));
                           }
                           
@@ -672,12 +662,7 @@ class WhereAmI extends StatelessWidget {
                             ),
                           ),
                         onTap: () {
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
-                          if (Navigator.canPop(context)) {
-                            Navigator.pop(context);
-                          }
+                          Navigator.popUntil(context, (route) => route.isFirst);
                         },
                         ),
                       ),
@@ -723,12 +708,7 @@ class WhereAmI extends StatelessWidget {
                             }
                           }
                           else {
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
-                            if (Navigator.canPop(context)) {
-                              Navigator.pop(context);
-                            }
+                            Navigator.popUntil(context, (route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => MapTo(latitude: latitude, longitude: longitude, addr: addr)));
                           }
                         },
