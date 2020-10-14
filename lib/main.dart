@@ -290,7 +290,7 @@ class MapTo extends StatelessWidget {
                   "@2x.png?access_token={accessToken}",
             additionalOptions: {
               'accessToken': 'pk.eyJ1IjoiYXRieXJvbiIsImEiOiJjazh4cmw5bGwxMTRtM21wa2lseWc3ZDAzIn0.0-m64CutTVp7EHP2zXJYHw',
-              'id': 'mapbox.streets',
+              'id': 'mapbox.satellite',
             },
           ),
           new MarkerLayerOptions(
